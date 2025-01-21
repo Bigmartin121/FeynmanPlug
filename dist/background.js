@@ -1,0 +1,1 @@
+chrome.runtime.onInstalled.addListener(e=>{e.reason==="install"&&chrome.storage.local.set({theme:"light",language:"en",selectedModel:"openai",customPrompts:{}})});chrome.runtime.onMessage.addListener((e,n,t)=>{if(e.type==="GET_SETTINGS")return chrome.storage.local.get(null,r=>{t({settings:r})}),!0});

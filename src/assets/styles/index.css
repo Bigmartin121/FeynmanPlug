@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Markdown 样式 */
+.markdown-body {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.markdown-body pre {
+  background-color: #1e1e1e !important;
+  border-radius: 6px;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.markdown-body code {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.markdown-body pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* 暗色模式 */
+@media (prefers-color-scheme: dark) {
+  .markdown-body {
+    color: #e4e4e7 !important;
+  }
+  
+  .markdown-body code {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
