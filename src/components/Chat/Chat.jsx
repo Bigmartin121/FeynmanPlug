@@ -3,6 +3,7 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import { decryptData } from '../../utils/encryption';
 import { getPromptTemplate } from '../../services/prompts/promptManager';
 import { sendMessage } from '../../services/api/apiService';
+import { sessionManager } from '../../services/chat/sessionManager';
 
 const roleLabels = {
   student: '学生',
@@ -21,6 +22,16 @@ const Chat = () => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  // 初始化会话和加载历史消息
+  useEffect(() => {
+    const initSession = async () => {
+      await sessionManager.init();
+      const history = await sessionManager.getRecentMessages(50); // 加载最近50条消息
+      setMessages(history);
+    };
+    initSession();
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
@@ -43,13 +54,13 @@ const Chat = () => {
       const settings = await chrome.storage.local.get(['apiKey', 'selectedModel']);
       const decryptedKey = decryptData(settings.apiKey);
       const promptTemplate = await getPromptTemplate(currentRole);
-      
+
+      // 添加用户消息到界面
       const userMessage = {
         role: 'user',
         content: input,
         timestamp: new Date().toISOString()
       };
-      
       setMessages(prev => [...prev, userMessage]);
       setInput('');
 
@@ -65,15 +76,16 @@ const Chat = () => {
         model: settings.selectedModel
       });
 
+      // 添加助手回复到界面
       const aiMessage = {
         role: 'assistant',
         content: response,
         timestamp: new Date().toISOString()
       };
-
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
+      // 添加错误消息到界面
       setMessages(prev => [...prev, {
         role: 'system',
         content: '错误: ' + error.message,
@@ -91,24 +103,49 @@ const Chat = () => {
     }
   };
 
+  const handleClearChat = async () => {
+    await sessionManager.clearCurrentSession();
+    setMessages([]);
+  };
+
   return (
     <div style={{ height: '600px', display: 'flex', flexDirection: 'column', background: 'white' }}>
-      {/* 角色选择 */}
-      <div style={{ padding: '8px', borderBottom: '1px solid #e5e7eb' }}>
+      {/* 角色选择和操作栏 */}
+      <div style={{ 
+        padding: '8px', 
+        borderBottom: '1px solid #e5e7eb',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
         <select
           value={currentRole}
           onChange={(e) => setCurrentRole(e.target.value)}
           style={{
-            width: '100%',
             padding: '8px',
             borderRadius: '4px',
-            border: '1px solid #e5e7eb'
+            border: '1px solid #e5e7eb',
+            width: '120px'
           }}
         >
           {Object.entries(roleLabels).map(([value, label]) => (
             <option key={value} value={value}>{label}</option>
           ))}
         </select>
+        
+        <button
+          onClick={handleClearChat}
+          style={{
+            padding: '8px 16px',
+            borderRadius: '4px',
+            border: 'none',
+            background: '#ef4444',
+            color: 'white',
+            cursor: 'pointer'
+          }}
+        >
+          清空对话
+        </button>
       </div>
 
       {/* 消息列表 */}

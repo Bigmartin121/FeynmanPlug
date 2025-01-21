@@ -24,6 +24,8 @@ const MODEL_CONFIGS = {
   }
 };
 
+import { sessionManager } from '../chat/sessionManager';
+
 export const sendMessage = async ({
   message,
   role,
@@ -43,18 +45,37 @@ export const sendMessage = async ({
     'Authorization': `Bearer ${apiKey}`
   };
 
-  // 构建完整的 prompt
-  const fullPrompt = promptTemplate.replace('{message}', message)
-                                 .replace('{role}', role);
+  // 确保会话管理器已初始化
+  await sessionManager.init();
+
+  // 获取最近的对话历史
+  const recentMessages = await sessionManager.getRecentMessages();
+
+  // 构建完整的系统提示词
+  const systemPrompt = promptTemplate.replace('{message}', message);
+
+  // 构建消息列表，确保系统提示词在最前面
+  const messages = [
+    {
+      role: 'system',
+      content: systemPrompt
+    }
+  ];
+
+  // 添加历史消息，但跳过系统消息
+  recentMessages
+    .filter(msg => msg.role !== 'system')
+    .forEach(msg => messages.push(msg));
+
+  // 添加当前用户消息
+  messages.push({
+    role: 'user',
+    content: message
+  });
 
   const body = {
     ...config,
-    messages: [
-      {
-        role: 'user',
-        content: fullPrompt
-      }
-    ]
+    messages: messages
   };
 
   try {
@@ -70,7 +91,13 @@ export const sendMessage = async ({
     }
 
     const data = await response.json();
-    return data.choices[0].message.content;
+    const assistantMessage = data.choices[0].message.content;
+
+    // 保存用户消息和助手回复到会话历史
+    await sessionManager.addMessage('user', message);
+    await sessionManager.addMessage('assistant', assistantMessage);
+
+    return assistantMessage;
   } catch (error) {
     console.error('API Error:', error);
     throw error;
