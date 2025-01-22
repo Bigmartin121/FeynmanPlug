@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "费曼学习助手",
+  "name": "Feynman Learning Assistant",
   "version": "1.0.0",
-  "description": "一个使用费曼技巧和 AI 辅助的学习工具",
+  "description": "An AI-powered learning assistant that uses the Feynman Technique to help you understand complex concepts",
+  "author": "Your Name",
   "permissions": [
     "storage",
     "activeTab",

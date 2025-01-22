@@ -1,227 +1,34 @@
-# 费曼学习助手
+# Feynman Learning Assistant
 
-## 系统角色设定
+A Chrome extension that helps you learn and understand complex concepts using the Feynman Technique and AI assistance.
 
-### 1. 学习引导者（主持人）
-- 职责：组织和引导整个学习过程
-- 行为模式：
-  * 简洁清晰地引导流程
-  * 在关键节点进行总结
-  * 适时切换不同角色
-  * 确保学习过程不偏离轨道
+## Features
 
-### 2. 学习者（学生）
-- 特征：
-  * 充满求知欲
-  * 善于提出关键问题
-  * 会指出不理解的地方
-  * 寻求具体例子
-- 问题类型：
-  * "这个概念能具体解释一下吗？"
-  * "为什么会这样？"
-  * "能举个实际例子吗？"
-  * "这和之前学的X有什么关系？"
+- **AI-Powered Learning**: Utilizes advanced AI models to help explain concepts
+- **Feynman Technique**: Implements the famous Feynman learning method
+- **Multiple Learning Modes**: 
+  - Student Mode: Ask questions and learn
+  - Teacher Mode: Get detailed explanations
+  - Mentor Mode: Get guided learning sessions
 
-### 3. 智慧导师
-- 教学特点：
-  * 深入浅出的讲解
-  * 多维度的类比
-  * 及时纠正错误
-  * 补充关键知识
-- 反馈方式：
-  * 肯定正确理解
-  * 温和指出误区
-  * 引导深层思考
-  * 拓展知识边界
+## How to Use
 
-## 学习流程
+1. Click the extension icon in Chrome
+2. Select your preferred learning mode
+3. Enter the concept you want to learn
+4. Engage in an interactive learning session
+5. Get a detailed learning report at the end
 
-### 1. 初始化（2-3分钟）
-- 确定学习主题
-- 评估当前知识水平（初级/中级/高级）
-- 设定具体学习目标
-- 划定学习范围
+## Privacy & Security
 
-### 2. 概念阐述（5-7分钟）
-- 用户以教师身份讲解概念
-- 学生角色提出针对性问题
-- 用户回答并深化解释
-- 导师适时补充或纠正
+- All API keys are stored securely
+- No personal data is collected
+- All conversations are ephemeral
 
-### 3. 深化理解（5-7分钟）
-- 通过类比建立联系
-- 分析实际应用场景
-- 探讨概念局限性
-- 讨论常见误区
+## Support
 
-### 4. 知识整合（3-5分钟）
-- 总结核心要点
-- 建立知识网络
-- 指出进阶方向
-- 推荐学习资源
+If you encounter any issues or have suggestions, please create an issue in our GitHub repository.
 
-## 输出报告
+## License
 
-### 学习报告
-```markdown
-## 学习总结
-- 主题：[主题名称]
-- 时长：[学习时间]
-- 难度：[难度级别]
-
-### 知识发展
-1. 初始理解
-2. 关键突破点
-3. 形成的新认知
-4. 待深入的领域
-
-### 应用价值
-1. 实际应用场景
-2. 解决的问题
-3. 潜在机会
-
-### 后续计划
-1. 深化方向
-2. 实践计划
-3. 资源推荐
-
-```
-
-## 项目结构
-
-```
-feynman-learning-extension/
-├── manifest.json                 # Chrome 插件配置文件
-├── src/
-│   ├── popup/                   # 弹出窗口相关
-│   │   ├── popup.html          # 弹出窗口 HTML
-│   │   ├── popup.css           # 弹出窗口样式
-│   │   └── popup.js            # 弹出窗口逻辑
-│   ├── background/             # 后台服务
-│   │   └── background.js       # 后台脚本
-│   ├── content/                # 内容脚本
-│   │   └── content.js          # 页面注入脚本
-│   ├── components/             # React 组件
-│   │   ├── Chat/              # 对话组件
-│   │   ├── Settings/          # 设置组件
-│   │   └── Common/            # 通用组件
-│   ├── services/              # 服务层
-│   │   ├── api/              # API 接口
-│   │   │   ├── openai.js     # OpenAI API
-│   │   │   ├── deepseek.js   # Deepseek API
-│   │   │   └── qwen.js       # Qwen API
-│   │   ├── storage/          # 存储服务
-│   │   └── prompts/          # Prompt 模板
-│   └── utils/                # 工具函数
-└── assets/                   # 静态资源
-    ├── icons/               # 图标
-    └── styles/              # 全局样式
-
-```
-
-## 技术架构
-
-### 1. 前端架构
-- React 18 用于构建用户界面
-- TailwindCSS 用于样式管理
-- React Context 用于状态管理
-
-### 2. 核心模块
-
-#### 2.1 对话管理模块
-- 会话初始化
-- 角色切换控制
-- 上下文管理
-- 会话历史记录
-
-#### 2.2 LLM 集成模块
-- 多模型支持（OpenAI、Deepseek、Qwen）
-- API 密钥管理
-- 模型切换机制
-- 错误处理和重试机制
-
-#### 2.3 存储模块
-- Chrome Storage API 集成
-- 配置信息加密存储
-- 会话历史管理
-- 用户设置持久化
-
-#### 2.4 Prompt 管理模块
-- 模板加载和渲染
-- 动态提示词生成
-- 上下文组装
-- 多场景模板
-
-### 3. 数据流
-
-```
-用户输入 -> 前端组件 -> Prompt 管理 -> LLM 服务 -> 响应处理 -> 界面更新
-```
-
-### 4. 安全考虑
-- API 密钥本地加密存储
-- 敏感数据处理
-- 错误处理机制
-- 用户数据保护
-
-## 开发指南
-
-### 环境要求
-- Node.js >= 16
-- npm >= 8
-
-### 安装依赖
-```bash
-npm install
-```
-
-### 开发模式
-```bash
-npm run dev
-```
-
-### 构建插件
-```bash
-npm run build
-```
-
-### 测试
-```bash
-npm run test
-```
-
-## 主要功能模块
-
-### 1. 设置面板
-- LLM API 配置
-- 界面主题设置
-- 快捷键配置
-- 语言偏好设置
-
-### 2. 对话界面
-- 角色切换
-- 会话历史
-- 知识点总结
-- 学习报告生成
-
-### 3. 学习工具
-- 截图识别
-- 语音输入
-- 进度追踪
-- 知识导出
-
-## 使用流程
-
-1. 配置 API
-2. 选择学习主题
-3. 开始教学会话
-4. 获取学习报告
-5. 导出/保存记录
-
-## 开发路线图
-
-- [x] 项目基础架构
-- [ ] 核心对话功能
-- [ ] 多模型支持
-- [ ] UI/UX 优化
-- [ ] 高级功能开发
+MIT License - see LICENSE file for details
